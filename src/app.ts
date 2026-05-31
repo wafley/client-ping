@@ -3,9 +3,19 @@ import { corsMiddleware } from "./config/cors";
 import fs from "fs";
 import path from "path";
 
+import morgan from "morgan";
+import { logger } from "./utils/logger";
+
 const app = express();
 
 // Middleware
+app.use(
+    morgan("dev", {
+        stream: {
+            write: (message) => logger.http(message.trim()),
+        },
+    }),
+);
 app.use(corsMiddleware);
 app.use(express.json());
 
